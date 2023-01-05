@@ -1,0 +1,22 @@
+﻿@using HairdressingSalon.Web.ViewModels.Hairdressers
+@using HairdressingSalon.Data.SeedData
+@model IList<HairdresserViewModel>
+
+ @foreach (var hairdresser in Model)
+    {
+        <div class="col">
+            <div class="card">
+              <img src="~/images/profiles/@hairdresser.ImageName" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">@hairdresser.Name</h5>
+                <div class="card-text">About me:
+                @Html.Raw(@hairdresser.IntroduceHtml)
+                </div>
+                @if(User.IsInRole(RoleHelper.Customers))
+                {
+                    <a asp-page="DoctorOrderingHours" asp-route-id="@hairdresser.Id" class="btn btn-primary">Book an Appointments</a>
+                }
+              </div>
+            </div>
+        </div>
+    }

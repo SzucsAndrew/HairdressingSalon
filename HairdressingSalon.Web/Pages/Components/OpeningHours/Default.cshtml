@@ -1,0 +1,30 @@
+﻿@using HairdressingSalon.Web.ViewModels.OpeningHours
+@model IList<OpeningHourViewModel>
+
+<div>
+    <h4>Opening time</h4>
+    <table class="table">
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(x => x[i].DayOfWeek)
+                        </td>
+                    @if (Model[i].IsClosed)
+                    {
+                        <td>
+                            Closed
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.DisplayFor(x => x[i].OpenTime) - @Html.DisplayFor(x => x[i].CloseTime)
+                        </td>
+                    }
+                    </tr>
+                }
+            </tbody>
+        </table>
+</div>

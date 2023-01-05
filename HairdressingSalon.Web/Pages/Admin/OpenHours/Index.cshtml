@@ -1,0 +1,52 @@
+﻿@page
+@model HairdressingSalon.Web.Pages.Admin.OpenHours.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OpeningHours[0].DayOfWeek)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpeningHours[0].OpenTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpeningHours[0].CloseTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpeningHours[0].IsClosed)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.OpeningHours) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DayOfWeek)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpenTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CloseTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsClosed)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

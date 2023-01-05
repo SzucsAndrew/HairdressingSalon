@@ -1,0 +1,49 @@
+﻿@page
+@model HairdressingSalon.Web.Pages.Admin.OpenHours.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>OpeningHour</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="OpeningHour.Id" />
+            <div class="form-group">
+                <label asp-for="OpeningHour.DayOfWeek" class="control-label"></label>
+                @Html.DisplayText(Model.OpeningHour.DayOfWeek);
+            </div>
+            <div class="form-group">
+                <label asp-for="OpeningHour.OpenTime" class="control-label"></label>
+                <input asp-for="OpeningHour.OpenTime" class="form-control" />
+                <span asp-validation-for="OpeningHour.OpenTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OpeningHour.CloseTime" class="control-label"></label>
+                <input asp-for="OpeningHour.CloseTime" class="form-control" />
+                <span asp-validation-for="OpeningHour.CloseTime" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="OpeningHour.IsClosed" /> @Html.DisplayNameFor(model => model.OpeningHour.IsClosed)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

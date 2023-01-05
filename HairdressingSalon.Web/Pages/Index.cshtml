@@ -1,0 +1,26 @@
+﻿@page
+@using HairdressingSalon.Data.SeedData
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@if (!User.IsInRole(RoleHelper.Hairdressers))
+{
+    <section id="hairdresserList">
+        @await Component.InvokeAsync("HairdresserList")
+    </section>
+}
+<section id="appoinments">
+    @if (User.IsInRole(RoleHelper.Hairdressers))
+    {
+        @await Component.InvokeAsync("HairdressersAppointments")
+    }
+    @if (User.IsInRole(RoleHelper.Customers))
+    {
+        @await Component.InvokeAsync("CustomerAppointments")
+    }
+</section>
+<section id="openingHours">
+     @await Component.InvokeAsync("OpeningHours")
+</section>
