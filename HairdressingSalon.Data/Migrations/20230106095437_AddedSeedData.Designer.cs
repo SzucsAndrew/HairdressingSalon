@@ -4,6 +4,7 @@ using HairdressingSalon.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HairdressingSalon.Data.Migrations
 {
     [DbContext(typeof(HairdressingSalonDbContext))]
-    partial class HairdressingSalonDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230106095437_AddedSeedData")]
+    partial class AddedSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -290,18 +292,18 @@ namespace HairdressingSalon.Data.Migrations
                         new
                         {
                             Id = 6,
-                            CloseTime = new TimeSpan(0, 0, 0, 0, 0),
+                            CloseTime = new TimeSpan(-9223372036854775808),
                             DayOfWeek = 6,
                             IsClosed = true,
-                            OpenTime = new TimeSpan(0, 0, 0, 0, 0)
+                            OpenTime = new TimeSpan(-9223372036854775808)
                         },
                         new
                         {
                             Id = 7,
-                            CloseTime = new TimeSpan(0, 0, 0, 0, 0),
+                            CloseTime = new TimeSpan(-9223372036854775808),
                             DayOfWeek = 7,
                             IsClosed = true,
-                            OpenTime = new TimeSpan(0, 0, 0, 0, 0)
+                            OpenTime = new TimeSpan(-9223372036854775808)
                         });
                 });
 

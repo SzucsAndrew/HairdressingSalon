@@ -1,4 +1,5 @@
 ﻿using HairdressingSalon.Data.Entities;
+using HairdressingSalon.Data.SeedData;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,13 @@ namespace HairdressingSalon.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            Seed(modelBuilder);
+        }
+
+        private void Seed(ModelBuilder modelBuilder)
+        {
+            new BasicSeedServce().Seed(modelBuilder);
         }
     }
 }

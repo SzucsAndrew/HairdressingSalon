@@ -44,6 +44,7 @@ namespace HairdressingSalon.Web.Helper.DepedencyInjectionHelper
             service.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;
+                //-------Commented out becuase of demo
                 //  options.Password.RequireLowercase = true;
                 //  options.Password.RequireNonAlphanumeric = true;
                 //     options.Password.RequireUppercase = true;
@@ -52,6 +53,7 @@ namespace HairdressingSalon.Web.Helper.DepedencyInjectionHelper
 
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
+                //-------Commented out becuase of demo
                 //  options.Lockout.AllowedForNewUsers = true;
 
                 //   options.User.AllowedUserNameCharacters =
@@ -100,6 +102,7 @@ namespace HairdressingSalon.Web.Helper.DepedencyInjectionHelper
             {
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
+                //-------Commented out becuase of demo
                 //options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
                 options.LoginPath = "/Identity/Account/Login";

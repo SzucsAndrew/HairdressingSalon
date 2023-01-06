@@ -2,27 +2,35 @@
 @using HairdressingSalon.Data.SeedData
 @model HairdresserListModel
 
+<h4>Hairdressers</h4>
 <div class="row row-cols-1 row-cols-md-3 g-4">
- @foreach (var hairdresser in Model.Hairdressers)
-    {
-        <div class="col">
-            <div class="card">
-              <img src="~/images/profiles/@hairdresser.ImageName" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">@hairdresser.Name</h5>
-                <div class="card-text">About me:
-                @Html.Raw(@hairdresser.IntroduceHtml)
+    @if (Model.Hairdressers == null || Model.Hairdressers.Count == 0)
+   {
+       <p>There is no hairdresser</p>
+   }
+   else
+   {
+     @foreach (var hairdresser in Model.Hairdressers)
+        {
+            <div class="col">
+                <div class="card">
+                  <img src="~/images/profiles/@hairdresser.ImageName" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title">@hairdresser.Name</h5>
+                    <div class="card-text">About me:
+                    @Html.Raw(@hairdresser.IntroduceHtml)
+                    </div>
+                    @if(User.IsInRole(RoleHelper.Customers))
+                    {
+                        <a asp-page="Customer/Appointments/Create" asp-route-hairdresserId="@hairdresser.Id" asp-route-customerId="@Model.CustomerId" class="btn btn-primary">Book an Appointments</a>
+                    }
+                    @if(User.IsInRole(RoleHelper.Administrators))
+                    {
+                        <a asp-page="Admin/Hairdressers/Details" asp-route-Id="@hairdresser.Id" class="btn btn-primary">Details</a>
+                    }
+                  </div>
                 </div>
-                @if(User.IsInRole(RoleHelper.Customers))
-                {
-                    <a asp-page="Customer/Appointments/Create" asp-route-hairdresserId="@hairdresser.Id" asp-route-customerId="@Model.CustomerId" class="btn btn-primary">Book an Appointments</a>
-                }
-                @if(User.IsInRole(RoleHelper.Administrators))
-                {
-                    <a asp-page="Admin/Hairdressers/Details" asp-route-Id="@hairdresser.Id" class="btn btn-primary">Details</a>
-                }
-              </div>
             </div>
-        </div>
+        }
     }
  </div>

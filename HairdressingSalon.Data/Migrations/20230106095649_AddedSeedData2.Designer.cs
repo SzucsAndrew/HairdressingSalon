@@ -4,6 +4,7 @@ using HairdressingSalon.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HairdressingSalon.Data.Migrations
 {
     [DbContext(typeof(HairdressingSalonDbContext))]
-    partial class HairdressingSalonDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230106095649_AddedSeedData2")]
+    partial class AddedSeedData2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
