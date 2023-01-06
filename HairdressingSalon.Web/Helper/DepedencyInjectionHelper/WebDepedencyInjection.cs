@@ -14,9 +14,15 @@ namespace HairdressingSalon.Web.Helper.DepedencyInjectionHelper
         public static void AddWebLayer(this IServiceCollection service, IConfigurationRoot configuration)
         {
             service.Configure<MailSettings>(configuration.GetSection("MailSettings"));
-            service.AddTransient<IEmailSender, EmailSender>();
+            service.AddServices();
             service.AddAutoMapper(typeof(Program).Assembly);
             service.AddAuth(configuration);
+        }
+
+        private static void AddServices(this IServiceCollection service)
+        {
+            service.AddTransient<IEmailSender, EmailSender>();
+            service.AddSingleton<FileService>();
         }
 
         private static void AddAuth(this IServiceCollection service, IConfigurationRoot configuration)
@@ -72,9 +78,9 @@ namespace HairdressingSalon.Web.Helper.DepedencyInjectionHelper
                 options.AddPolicy(PolicyHelper.Admin, policy => policy.RequireClaim(ClaimTypes.Role, RoleHelper.Administrators));
                 options.AddPolicy(PolicyHelper.RequiredAdministratorRole, policy => policy.RequireRole(RoleHelper.Administrators));
                 options.AddPolicy(PolicyHelper.Hairdresser, policy => policy.RequireClaim(ClaimTypes.Role, RoleHelper.Hairdressers));
-                options.AddPolicy(PolicyHelper.RequiredHairdresserRole, policy => policy.RequireRole(RoleHelper.Hairdressers, RoleHelper.Administrators));
+                options.AddPolicy(PolicyHelper.RequiredHairdresserRole, policy => policy.RequireRole(RoleHelper.Hairdressers));
                 options.AddPolicy(PolicyHelper.Customer, policy => policy.RequireClaim(ClaimTypes.Role, RoleHelper.Customers));
-                options.AddPolicy(PolicyHelper.RequiredCustomerRole, policy => policy.RequireRole(RoleHelper.Customers, RoleHelper.Administrators));
+                options.AddPolicy(PolicyHelper.RequiredCustomerRole, policy => policy.RequireRole(RoleHelper.Customers));
             });
         }
 
@@ -83,7 +89,7 @@ namespace HairdressingSalon.Web.Helper.DepedencyInjectionHelper
             service.AddRazorPages(options =>
             {
                 options.Conventions.AuthorizeFolder("/Admin", PolicyHelper.RequiredAdministratorRole);
-                options.Conventions.AuthorizeFolder("/Hairdresser", PolicyHelper.RequiredHairdresserRole);
+                options.Conventions.AuthorizeFolder("/Customer", PolicyHelper.RequiredCustomerRole);
             });
         }
 

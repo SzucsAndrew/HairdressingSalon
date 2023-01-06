@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Hairdresser.Name" class="control-label"></label>
@@ -23,24 +23,16 @@
                 <input asp-for="Hairdresser.BirthDate" class="form-control" />
                 <span asp-validation-for="Hairdresser.BirthDate" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Hairdresser.Fired" /> @Html.DisplayNameFor(model => model.Hairdresser.Fired)
-                </label>
-            </div>
             <div class="form-group">
-                <label asp-for="Hairdresser.ImageName" class="control-label"></label>
-                <input asp-for="Hairdresser.ImageName" class="form-control" />
-                <span asp-validation-for="Hairdresser.ImageName" class="text-danger"></span>
+                <label asp-for="Photo" class="col-sm-2 col-form-label"></label>
+                <div class="custom-file">
+                    <input type="file" asp-for="Photo" class="custom-file-input form-control" accept=".png, .jpg, .jpeg">
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="Hairdresser.IntroduceHtml" class="control-label"></label>
                 <input asp-for="Hairdresser.IntroduceHtml" class="form-control" />
                 <span asp-validation-for="Hairdresser.IntroduceHtml" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Hairdresser.ApplicationUserId" class="control-label"></label>
-                <select asp-for="Hairdresser.ApplicationUserId" class ="form-control" asp-items="ViewBag.ApplicationUserId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -54,5 +46,12 @@
 </div>
 
 @section Scripts {
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+    tinymce.init({
+        selector: "#Hairdresser_IntroduceHtml",
+        width: '100%'
+    });
+    </script>
 }

@@ -6,5 +6,7 @@
         public string Name { get; set; }
         public string ImageName { get; set; }
         public string? IntroduceHtml { get; set; }
+        public DateTime BirthDate { get; set; }
+        public bool Fired { get; set; }
     }
 }

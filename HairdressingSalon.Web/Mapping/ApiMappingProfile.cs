@@ -2,6 +2,7 @@
 using HairdressingSalon.Data.Entities;
 using HairdressingSalon.Web.Helper;
 using HairdressingSalon.Web.ViewModels.Appointments;
+using HairdressingSalon.Web.ViewModels.Customers;
 using HairdressingSalon.Web.ViewModels.Hairdressers;
 using HairdressingSalon.Web.ViewModels.OpeningHours;
 using HairdressingSalon.Web.ViewModels.Services;
@@ -13,6 +14,16 @@ namespace HairdressingSalon.Web.Mapping
         public ApiMappingProfile()
         {
             CreateMap<Hairdresser, HairdresserViewModel>();
+            CreateMap<Hairdresser, HairdresserCreateModel>();
+            CreateMap<HairdresserCreateModel, Hairdresser>();
+            CreateMap<Hairdresser, HairdresserEditModel>();
+            CreateMap<HairdresserEditModel, Hairdresser>();
+            CreateMap<Hairdresser, HairdresserDetailsModel>();
+
+            CreateMap<Customer, CustomerViewModel>();
+
+            CreateMap<Appointment, AppointmentCreateModel>();
+            CreateMap<AppointmentCreateModel, Appointment>();
             CreateMap<Appointment, AppointmentViewModel>()
                 .ForMember(x => x.CustomerName, d => d.MapFrom(t => t.Customer.Name))
                 .ForMember(x => x.HairdresserName, d => d.MapFrom(t => t.Hairdresser.Name))

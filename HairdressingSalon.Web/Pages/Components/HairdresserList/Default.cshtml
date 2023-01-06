@@ -1,8 +1,9 @@
 ﻿@using HairdressingSalon.Web.ViewModels.Hairdressers
 @using HairdressingSalon.Data.SeedData
-@model IList<HairdresserViewModel>
+@model HairdresserListModel
 
- @foreach (var hairdresser in Model)
+<div class="row row-cols-1 row-cols-md-3 g-4">
+ @foreach (var hairdresser in Model.Hairdressers)
     {
         <div class="col">
             <div class="card">
@@ -14,9 +15,10 @@
                 </div>
                 @if(User.IsInRole(RoleHelper.Customers))
                 {
-                    <a asp-page="DoctorOrderingHours" asp-route-id="@hairdresser.Id" class="btn btn-primary">Book an Appointments</a>
+                    <a asp-page="Customer/Appointments/Create" asp-route-hairdresserId="@hairdresser.Id" asp-route-customerId="@Model.CustomerId" class="btn btn-primary">Book an Appointments</a>
                 }
               </div>
             </div>
         </div>
     }
+ </div>

@@ -13,7 +13,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">HairdressingSalon.Web</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Hairdressing Salon</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -30,29 +30,12 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarAdmin">
                                     <a class="dropdown-item" asp-page="/Admin/Hairdressers/Index">Hairdresser</a>
                                     <hr class="dropdown-divider">
-                                    <a class="dropdown-item" asp-page="/Admin/Hairdressers/Create">Add Hairdresser</a>
+                                    <a class="dropdown-item" asp-page="/Admin/OpenHours/Index">Opening Hours</a>
                                     <hr class="dropdown-divider">
-                                    <a class="dropdown-item" asp-page="/Admin/Openinghours/Edit">Edit Opening Hours</a>
-                                    <hr class="dropdown-divider">
-                                    <a class="dropdown-item" asp-page="/Admin/Services/Edit">Edit Price list</a>
+                                    <a class="dropdown-item" asp-page="/Admin/ServiceList/Index">Price list</a>
                                 </div>
                             </li>
                         }
-                        <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">Hairdresser</a>
-                                <div class="dropdown-menu" aria-labelledby="navbarAdmin">
-                                    @if (User.IsInRole(RoleHelper.Administrators) || User.IsInRole(RoleHelper.Hairdressers))
-                                    {
-                                         <a class="dropdown-item" asp-page="/Hairdresser/Index">View Appoitments</a>
-                                    }
-                                    else if(User.IsInRole(RoleHelper.Customers))
-                                {
-                                    <a class="dropdown-item" asp-page="/Hairdressers/Appoitment">Book an appoitment</a>
-                                    <hr class="dropdown-divider">
-                                    <a class="dropdown-item" asp-page="/Admin/Hairdressers/Create">Check my appoitments</a>
-                                }
-                            </div>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>

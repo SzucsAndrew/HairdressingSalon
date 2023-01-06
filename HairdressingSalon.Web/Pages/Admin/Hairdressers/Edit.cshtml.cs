@@ -1,78 +1,97 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using HairdressingSalon.Data;
 using HairdressingSalon.Data.Entities;
+using HairdressingSalon.Bll.Services;
+using AutoMapper;
+using HairdressingSalon.Web.ViewModels.Hairdressers;
+using HairdressingSalon.Web.Services;
+using Ganss.Xss;
 
 namespace HairdressingSalon.Web.Pages.Admin.Hairdressers
 {
     public class EditModel : PageModel
     {
-        private readonly HairdressingSalon.Data.HairdressingSalonDbContext _context;
+        private readonly HairdresserService _hairdresserService;
+        private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment _webHostEnviroment;
+        private readonly FileService _fileService;
 
-        public EditModel(HairdressingSalon.Data.HairdressingSalonDbContext context)
+        public EditModel(
+            HairdresserService hairdresserService,
+            IMapper mapper,
+            IWebHostEnvironment webHostEnvironment,
+            FileService fileService)
         {
-            _context = context;
+            _hairdresserService = hairdresserService;
+            _mapper = mapper;
+            _webHostEnviroment = webHostEnvironment;
+            _fileService = fileService;
         }
 
         [BindProperty]
-        public Hairdresser Hairdresser { get; set; } = default!;
+        public HairdresserEditModel Hairdresser { get; set; } = default!;
+
+        [BindProperty]
+        public IFormFile? Photo { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Hairdressers == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var hairdresser =  await _context.Hairdressers.FirstOrDefaultAsync(m => m.Id == id);
+            var hairdresser =  await _hairdresserService.GetByIdAsync(id.Value);
             if (hairdresser == null)
             {
                 return NotFound();
             }
-            Hairdresser = hairdresser;
-           ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Name");
+            Hairdresser = _mapper.Map<HairdresserEditModel>(hairdresser);
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            var hairdresser = await _hairdresserService.GetByIdAsync(Hairdresser.Id);
+            if (hairdresser == null)
+            {
+                return NotFound();
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Attach(Hairdresser).State = EntityState.Modified;
-
-            try
+            if (Hairdresser.IntroduceHtml != null)
             {
-                await _context.SaveChangesAsync();
+                Hairdresser.IntroduceHtml = new HtmlSanitizer().Sanitize(Hairdresser.IntroduceHtml);
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!HairdresserExists(Hairdresser.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            SavePhoto(hairdresser);
+            await _hairdresserService.AddOrUpdateHairdresserAsync(_mapper.Map<Hairdresser>(Hairdresser));
 
             return RedirectToPage("./Index");
         }
 
-        private bool HairdresserExists(int id)
+        private void SavePhoto(Hairdresser hairdresser)
         {
-          return _context.Hairdressers.Any(e => e.Id == id);
+            if (Photo != null)
+            {
+                var uploadsFolder = Path.Combine(_webHostEnviroment.WebRootPath, "images", "profiles");
+
+                RemoveOldPhoto(hairdresser, uploadsFolder);
+
+                hairdresser.ImageName = _fileService.SaveImage(uploadsFolder, Photo);
+            }
+        }
+
+        private void RemoveOldPhoto(Hairdresser hairdresser, string uploadsFolder)
+        {
+            if (!string.IsNullOrWhiteSpace(hairdresser.ImageName))
+            {
+                var oldFilePath = Path.Combine(uploadsFolder, hairdresser.ImageName);
+                _fileService.RemoveImage(oldFilePath);
+            }
         }
     }
 }

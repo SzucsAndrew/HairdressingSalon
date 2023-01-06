@@ -1,33 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using HairdressingSalon.Data;
-using HairdressingSalon.Data.Entities;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using AutoMapper;
+using HairdressingSalon.Bll.Services;
+using HairdressingSalon.Web.ViewModels.Hairdressers;
 
 namespace HairdressingSalon.Web.Pages.Admin.Hairdressers
 {
     public class IndexModel : PageModel
     {
-        private readonly HairdressingSalon.Data.HairdressingSalonDbContext _context;
+        private readonly HairdresserService _hairdresserService;
+        private readonly IMapper _mapper;
 
-        public IndexModel(HairdressingSalon.Data.HairdressingSalonDbContext context)
+        public IndexModel(HairdresserService hairdresserService, IMapper mapper)
         {
-            _context = context;
+            _hairdresserService = hairdresserService;
+            _mapper = mapper;
         }
 
-        public IList<Hairdresser> Hairdresser { get;set; } = default!;
+        public IList<HairdresserViewModel> Hairdresser { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            if (_context.Hairdressers != null)
-            {
-                Hairdresser = await _context.Hairdressers
-                .Include(h => h.ApplicationUser).ToListAsync();
-            }
+            Hairdresser = _mapper.Map<IList<HairdresserViewModel>>(await _hairdresserService.GetAllHairdresserAsync());
         }
     }
 }

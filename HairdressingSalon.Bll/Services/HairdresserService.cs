@@ -13,9 +13,14 @@ namespace HairdressingSalon.Bll.Services
             _hairdressingSalonDbContext = hairdressingSalonDbContext;
         }
 
-        public async Task<IList<Hairdresser>> GetAllHairdresserAsync()
+        public async Task<IList<Hairdresser>> GetAllActiveHairdresserAsync()
         {
             return await _hairdressingSalonDbContext.Hairdressers.Where(h => !h.Fired).ToListAsync();
+        }
+
+        public async Task<IList<Hairdresser>> GetAllHairdresserAsync()
+        {
+            return await _hairdressingSalonDbContext.Hairdressers.ToListAsync();
         }
 
         public async Task RemoveAsync(int id)
@@ -33,7 +38,13 @@ namespace HairdressingSalon.Bll.Services
             EntityEntry<Hairdresser> entry;
             if (hairdresser.Id != 0)
             {
-                entry = _hairdressingSalonDbContext.Entry<Hairdresser>(await _hairdressingSalonDbContext.Hairdressers.FindAsync(hairdresser.Id));
+                var currentHairdresser = await _hairdressingSalonDbContext.Hairdressers.FindAsync(hairdresser.Id);
+                if (hairdresser.ImageName == null)
+                {
+                    hairdresser.ImageName = currentHairdresser.ImageName;
+                }
+                hairdresser.ApplicationUserId = currentHairdresser.ApplicationUserId;
+                entry = _hairdressingSalonDbContext.Entry<Hairdresser>(currentHairdresser);
             }
             else
             {

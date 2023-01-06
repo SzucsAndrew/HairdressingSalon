@@ -27,11 +27,8 @@ namespace HairdressingSalon.Bll.Services
         {
             var currentOpeningHour = await _hairdressingSalonDbContext.OpeningHours.FindAsync(openingHour.Id);
             var entry = _hairdressingSalonDbContext.Entry<OpeningHour>(currentOpeningHour);
-            var dayOfWeek = currentOpeningHour.DayOfWeek;
-
+            openingHour.DayOfWeek = currentOpeningHour.DayOfWeek;
             entry.CurrentValues.SetValues(openingHour);
-
-            currentOpeningHour.DayOfWeek = dayOfWeek;
 
             await _hairdressingSalonDbContext.SaveChangesAsync();
         }

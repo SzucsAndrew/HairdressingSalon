@@ -9,6 +9,7 @@ using HairdressingSalon.Web.ViewModels.Customers;
 using HairdressingSalon.Web.ViewModels.Hairdressers;
 using HairdressingSalon.Web.ViewModels.Appointments;
 using EntityCustomer = HairdressingSalon.Data.Entities.Customer;
+using HairdressingSalon.Data.Enums;
 
 namespace HairdressingSalon.Web.Pages.Customer.Appointments
 {

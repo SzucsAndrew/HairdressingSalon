@@ -10,6 +10,9 @@
 <div>
     <h4>Hairdresser</h4>
     <hr />
+    <div>
+        <img src="~/images/profiles/@Model.Hairdresser.ImageName" class="img-fluid rounded" alt="..." height="30%" width="30%">
+    </div>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Hairdresser.Name)
@@ -30,28 +33,16 @@
             @Html.DisplayFor(model => model.Hairdresser.Fired)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Hairdresser.ImageName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Hairdresser.ImageName)
-        </dd>
-        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Hairdresser.IntroduceHtml)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Hairdresser.IntroduceHtml)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Hairdresser.RowVersion)
+            @Html.DisplayNameFor(model => model.Hairdresser.ApplicationUserId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Hairdresser.RowVersion)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Hairdresser.ApplicationUser)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Hairdresser.ApplicationUser.Name)
+            @Html.DisplayFor(model => model.Hairdresser.ApplicationUserId)
         </dd>
     </dl>
 </div>

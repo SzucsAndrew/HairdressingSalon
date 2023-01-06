@@ -38,7 +38,9 @@ namespace HairdressingSalon.Bll.Services
         {
             var entry = _hairdressingSalonDbContext.Add(new Appointment());
 
+            appointment.Status = AppointmentStatus.Waiting;
             entry.CurrentValues.SetValues(appointment);
+            
             await _hairdressingSalonDbContext.SaveChangesAsync();
         }
 

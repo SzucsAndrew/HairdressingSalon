@@ -15,6 +15,7 @@ namespace HairdressingSalon.Web.Helper.DepedencyInjectionHelper
             service.AddScoped<AppointmentService>();
             service.AddScoped<CustomerService>();
             service.AddScoped<OpeningHourService>();
+            service.AddScoped<ServiceListService>();
         }
     }
 }

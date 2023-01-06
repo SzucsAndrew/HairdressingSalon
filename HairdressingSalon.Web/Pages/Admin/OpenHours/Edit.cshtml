@@ -15,16 +15,16 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="OpeningHour.Id" />
             <div class="form-group">
-                <label asp-for="OpeningHour.DayOfWeek" class="control-label"></label>
-                @Html.DisplayText(Model.OpeningHour.DayOfWeek);
+                <label asp-for="OpeningHour.DayOfWeek" class="control-label">Day</label>
+                <input asp-for="OpeningHour.DayOfWeek" readonly class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="OpeningHour.OpenTime" class="control-label"></label>
+                <label asp-for="OpeningHour.OpenTime" class="control-label">Open time</label>
                 <input asp-for="OpeningHour.OpenTime" class="form-control" />
                 <span asp-validation-for="OpeningHour.OpenTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OpeningHour.CloseTime" class="control-label"></label>
+                <label asp-for="OpeningHour.CloseTime" class="control-label">Close time</label>
                 <input asp-for="OpeningHour.CloseTime" class="form-control" />
                 <span asp-validation-for="OpeningHour.CloseTime" class="text-danger"></span>
             </div>

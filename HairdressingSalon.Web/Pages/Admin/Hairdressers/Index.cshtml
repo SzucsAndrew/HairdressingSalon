@@ -28,12 +28,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Hairdresser[0].IntroduceHtml)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hairdresser[0].RowVersion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hairdresser[0].ApplicationUser)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -53,13 +47,7 @@
                 @Html.DisplayFor(modelItem => item.ImageName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IntroduceHtml)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RowVersion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.Name)
+                @Html.Raw(item.IntroduceHtml)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

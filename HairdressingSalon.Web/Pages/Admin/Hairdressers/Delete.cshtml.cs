@@ -1,35 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using HairdressingSalon.Data;
-using HairdressingSalon.Data.Entities;
+using AutoMapper;
+using HairdressingSalon.Bll.Services;
+using HairdressingSalon.Web.ViewModels.Hairdressers;
 
 namespace HairdressingSalon.Web.Pages.Admin.Hairdressers
 {
     public class DeleteModel : PageModel
     {
-        private readonly HairdressingSalon.Data.HairdressingSalonDbContext _context;
+        private readonly HairdresserService _hairdresserService;
+        private readonly IMapper _mapper;
 
-        public DeleteModel(HairdressingSalon.Data.HairdressingSalonDbContext context)
+        public DeleteModel(HairdresserService hairdresserService, IMapper mapper)
         {
-            _context = context;
+            _hairdresserService = hairdresserService;
+            _mapper = mapper;
         }
 
         [BindProperty]
-      public Hairdresser Hairdresser { get; set; }
+        public HairdresserViewModel Hairdresser { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Hairdressers == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var hairdresser = await _context.Hairdressers.FirstOrDefaultAsync(m => m.Id == id);
+            var hairdresser = await _hairdresserService.GetByIdAsync(id.Value);
 
             if (hairdresser == null)
             {
@@ -37,24 +35,22 @@ namespace HairdressingSalon.Web.Pages.Admin.Hairdressers
             }
             else 
             {
-                Hairdresser = hairdresser;
+                Hairdresser = _mapper.Map<HairdresserViewModel>(hairdresser);
             }
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null || _context.Hairdressers == null)
+            if (id == null)
             {
                 return NotFound();
             }
-            var hairdresser = await _context.Hairdressers.FindAsync(id);
+            var hairdresser = await _hairdresserService.GetByIdAsync(id.Value);
 
             if (hairdresser != null)
             {
-                Hairdresser = hairdresser;
-                _context.Hairdressers.Remove(Hairdresser);
-                await _context.SaveChangesAsync();
+                await _hairdresserService.RemoveAsync(id.Value);
             }
 
             return RedirectToPage("./Index");
