@@ -53,6 +53,11 @@ namespace HairdressingSalon.Web.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            /// 
+            [Required]
+            [Display(Name = "Name")]
+            public string Name { get; set; }
+
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -62,12 +67,14 @@ namespace HairdressingSalon.Web.Areas.Identity.Pages.Account.Manage
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var userCustomeData = await _userManager.GetUserAsync(User);
 
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Name = userCustomeData.Name
             };
         }
 
@@ -95,6 +102,18 @@ namespace HairdressingSalon.Web.Areas.Identity.Pages.Account.Manage
             {
                 await LoadAsync(user);
                 return Page();
+            }
+
+            var userCustomData = await _userManager.GetUserAsync(User);
+            if (Input.Name != userCustomData.Name)
+            {
+                user.Name = Input.Name;
+                var setNameResult = await _userManager.UpdateAsync(user);
+                if (!setNameResult.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set name.";
+                    return RedirectToPage();
+                }
             }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);

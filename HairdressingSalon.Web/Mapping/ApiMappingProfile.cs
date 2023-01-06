@@ -18,7 +18,8 @@ namespace HairdressingSalon.Web.Mapping
             CreateMap<HairdresserCreateModel, Hairdresser>();
             CreateMap<Hairdresser, HairdresserEditModel>();
             CreateMap<HairdresserEditModel, Hairdresser>();
-            CreateMap<Hairdresser, HairdresserDetailsModel>();
+            CreateMap<Hairdresser, HairdresserDetailsModel>()
+                .ForMember(x => x.Email, d => d.MapFrom(t => t.ApplicationUser.Email));
 
             CreateMap<Customer, CustomerViewModel>();
 

@@ -3,16 +3,22 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using AutoMapper;
 using HairdressingSalon.Bll.Services;
 using HairdressingSalon.Web.ViewModels.Hairdressers;
+using HairdressingSalon.Web.Helper;
 
 namespace HairdressingSalon.Web.Pages.Admin.Hairdressers
 {
     public class DeleteModel : PageModel
     {
+        private readonly ApplicationUserRegisterHelper _applicationUserRegisterHelper;
         private readonly HairdresserService _hairdresserService;
         private readonly IMapper _mapper;
 
-        public DeleteModel(HairdresserService hairdresserService, IMapper mapper)
+        public DeleteModel(
+            HairdresserService hairdresserService,
+            IMapper mapper,
+            ApplicationUserRegisterHelper applicationUserRegisterHelper)
         {
+            _applicationUserRegisterHelper = applicationUserRegisterHelper;
             _hairdresserService = hairdresserService;
             _mapper = mapper;
         }
@@ -51,6 +57,7 @@ namespace HairdressingSalon.Web.Pages.Admin.Hairdressers
             if (hairdresser != null)
             {
                 await _hairdresserService.RemoveAsync(id.Value);
+                await _applicationUserRegisterHelper.LockoutTheUser(hairdresser.ApplicationUserId);
             }
 
             return RedirectToPage("./Index");

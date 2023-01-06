@@ -17,6 +17,10 @@
                 {
                     <a asp-page="Customer/Appointments/Create" asp-route-hairdresserId="@hairdresser.Id" asp-route-customerId="@Model.CustomerId" class="btn btn-primary">Book an Appointments</a>
                 }
+                @if(User.IsInRole(RoleHelper.Administrators))
+                {
+                    <a asp-page="Admin/Hairdressers/Details" asp-route-Id="@hairdresser.Id" class="btn btn-primary">Details</a>
+                }
               </div>
             </div>
         </div>

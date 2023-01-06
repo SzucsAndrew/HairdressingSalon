@@ -6,13 +6,13 @@ using HairdressingSalon.Web.ViewModels.Hairdressers;
 using HairdressingSalon.Web.Services;
 using HairdressingSalon.Data.Entities;
 using Ganss.Xss;
-using Microsoft.AspNetCore.Identity;
+using HairdressingSalon.Web.Helper;
 
 namespace HairdressingSalon.Web.Pages.Admin.Hairdressers
 {
     public class CreateModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationUserRegisterHelper _applicationUserRegisterHelper;
         private readonly HairdresserService _hairdresserService;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _webHostEnviroment;
@@ -23,13 +23,13 @@ namespace HairdressingSalon.Web.Pages.Admin.Hairdressers
             IMapper mapper,
             IWebHostEnvironment webHostEnvironment,
             FileService fileService,
-            UserManager<ApplicationUser> userManager)
+            ApplicationUserRegisterHelper applicationUserRegisterHelper)
         {
             _hairdresserService = hairdresserService;
             _mapper = mapper;
             _webHostEnviroment = webHostEnvironment;
             _fileService = fileService;
-            _userManager = userManager;
+            _applicationUserRegisterHelper = applicationUserRegisterHelper;
         }
 
         public IActionResult OnGet()
@@ -52,7 +52,10 @@ namespace HairdressingSalon.Web.Pages.Admin.Hairdressers
                 Hairdresser.IntroduceHtml = new HtmlSanitizer().Sanitize(Hairdresser.IntroduceHtml);
             }
 
+            var applicationUser = await _applicationUserRegisterHelper.GenerateHairdresser(Hairdresser.Name);
+
             var hairdresser = _mapper.Map<Hairdresser>(Hairdresser);
+            hairdresser.ApplicationUserId = applicationUser.Id;
             SavePhoto(hairdresser);
 
             await _hairdresserService.AddOrUpdateHairdresserAsync(hairdresser);

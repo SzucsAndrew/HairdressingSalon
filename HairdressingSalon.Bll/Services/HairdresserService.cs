@@ -63,7 +63,9 @@ namespace HairdressingSalon.Bll.Services
 
         public async Task<Hairdresser?> GetByIdAsync(int id)
         {
-            return await _hairdressingSalonDbContext.Hairdressers.SingleOrDefaultAsync(h => h.Id == id);
+            return await _hairdressingSalonDbContext.Hairdressers
+                .Include(x => x.ApplicationUser)
+                .SingleOrDefaultAsync(h => h.Id == id);
         }
     }
 }

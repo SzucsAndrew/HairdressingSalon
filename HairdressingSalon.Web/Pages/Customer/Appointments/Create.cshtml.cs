@@ -82,7 +82,7 @@ namespace HairdressingSalon.Web.Pages.Customer.Appointments
 
             await _appointmentService.CreateAsync(_mapper.Map<Appointment>(Appointment));
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Index");
         }
 
         private async Task LoadData(EntityCustomer customer, Hairdresser hairdresser)

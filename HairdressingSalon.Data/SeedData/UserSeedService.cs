@@ -6,6 +6,7 @@ namespace HairdressingSalon.Data.SeedData
     public class UserSeedService : IUserSeedService
     {
         private readonly UserManager<ApplicationUser> _userManager;
+
         public UserSeedService(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
@@ -13,10 +14,10 @@ namespace HairdressingSalon.Data.SeedData
 
         public async Task SeedUserAsync()
         {
-            await AddUser("admin@salon.com", "Administrator Bela", RoleHelper.Administrators);
-            await AddUser("hairdresser@salon.com", "Test Hairdresser", RoleHelper.Hairdressers);
-            await AddUser("customer@salon.com", "Test Customer", RoleHelper.Customers);
-        }//Create Hairdresser and Customer in ther own table
+            await AddUser("admin@salon.com", "Administrator", RoleHelper.Administrators);
+            //await AddUser("hairdresser@salon.com", "Test Hairdresser", RoleHelper.Hairdressers);
+            //await AddUser("customer@salon.com", "Test Customer", RoleHelper.Customers);
+        }
 
         private async Task AddUser(string email, string name, string role)
         {
@@ -27,7 +28,8 @@ namespace HairdressingSalon.Data.SeedData
                     UserName = email,
                     Email = email,
                     Name = name,
-                    SecurityStamp = Guid.NewGuid().ToString()
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    EmailConfirmed = true
                 };
 
                 var createResult = await _userManager.CreateAsync(applicationUser, "P@ssword");
@@ -47,5 +49,6 @@ namespace HairdressingSalon.Data.SeedData
                 }
             }
         }
+
     }
 }

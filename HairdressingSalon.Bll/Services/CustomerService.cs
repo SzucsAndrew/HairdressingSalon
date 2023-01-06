@@ -21,5 +21,14 @@ namespace HairdressingSalon.Bll.Services
         {
             return await _hairdressingSalonDbContext.Customers.SingleOrDefaultAsync(x => x.Id == id);
         }
+
+        public async Task CreateAsync(Customer customer)
+        {
+            var entry = _hairdressingSalonDbContext.Add(new Customer());
+
+            entry.CurrentValues.SetValues(customer);
+
+            await _hairdressingSalonDbContext.SaveChangesAsync();
+        }
     }
 }

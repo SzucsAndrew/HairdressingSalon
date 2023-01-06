@@ -9,5 +9,6 @@
         public string ImageName { get; set; }
         public string? IntroduceHtml { get; set; }
         public int ApplicationUserId { get; set; }
+        public string Email { get; set; }
     }
 }

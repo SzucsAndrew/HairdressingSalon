@@ -5,7 +5,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
+using HairdressingSalon.Bll.Services;
 using HairdressingSalon.Data.Entities;
+using HairdressingSalon.Data.SeedData;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -23,13 +25,15 @@ namespace HairdressingSalon.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly CustomerService _customerService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            CustomerService customerService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -37,6 +41,7 @@ namespace HairdressingSalon.Web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _customerService = customerService;
         }
 
         /// <summary>
@@ -73,6 +78,11 @@ namespace HairdressingSalon.Web.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
+            [Required]
+            [MaxLength(100)]
+            [Display(Name = "Name")]
+            public string Name { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -107,6 +117,7 @@ namespace HairdressingSalon.Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                user.Name = Input.Name;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -115,7 +126,8 @@ namespace HairdressingSalon.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
+                    await CreateCustomer(user.Id, user.Name, user.PhoneNumber);
+                    await _userManager.AddToRoleAsync(user, RoleHelper.Customers);
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -169,6 +181,18 @@ namespace HairdressingSalon.Web.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<ApplicationUser>)_userStore;
+        }
+
+        private async Task CreateCustomer(int applicationUserId, string name, string phoneNumber)
+        {
+            var customer = new Customer
+            {
+                ApplicationUserId = applicationUserId,
+                BirthDate = DateTime.UtcNow,
+                Name = name,
+                PhoneNumber = phoneNumber ?? "Fill it"
+            };
+            await _customerService.CreateAsync(customer);
         }
     }
 }

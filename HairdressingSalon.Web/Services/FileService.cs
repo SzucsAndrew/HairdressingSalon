@@ -4,7 +4,8 @@
     {
         public string SaveImage(string uploadsFolder, IFormFile photo)
         {
-            var uniqueFileName = Guid.NewGuid().ToString();
+            var extension = Path.GetExtension(photo.FileName);
+            var uniqueFileName = Guid.NewGuid().ToString() + extension;
             var filePath = Path.Combine(uploadsFolder, uniqueFileName);
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {

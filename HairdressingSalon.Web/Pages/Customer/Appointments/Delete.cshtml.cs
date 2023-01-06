@@ -55,7 +55,7 @@ namespace HairdressingSalon.Web.Pages.Customer.Appointments
                 await _appointmentService.RemoveAsync(id.Value);
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Index");
         }
     }
 }

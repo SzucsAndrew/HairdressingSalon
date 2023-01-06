@@ -6,22 +6,26 @@ using AutoMapper;
 using HairdressingSalon.Web.ViewModels.Hairdressers;
 using HairdressingSalon.Web.Services;
 using Ganss.Xss;
+using HairdressingSalon.Web.Helper;
 
 namespace HairdressingSalon.Web.Pages.Admin.Hairdressers
 {
     public class EditModel : PageModel
     {
+        private readonly ApplicationUserRegisterHelper _applicationUserRegisterHelper;
         private readonly HairdresserService _hairdresserService;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _webHostEnviroment;
         private readonly FileService _fileService;
 
         public EditModel(
+            ApplicationUserRegisterHelper applicationUserRegisterHelper,
             HairdresserService hairdresserService,
             IMapper mapper,
             IWebHostEnvironment webHostEnvironment,
             FileService fileService)
         {
+            _applicationUserRegisterHelper = applicationUserRegisterHelper;
             _hairdresserService = hairdresserService;
             _mapper = mapper;
             _webHostEnviroment = webHostEnvironment;
@@ -69,6 +73,15 @@ namespace HairdressingSalon.Web.Pages.Admin.Hairdressers
             }
             SavePhoto(hairdresser);
             await _hairdresserService.AddOrUpdateHairdresserAsync(_mapper.Map<Hairdresser>(Hairdresser));
+
+            if (Hairdresser.Fired)
+            {
+                await _applicationUserRegisterHelper.LockoutTheUser(hairdresser.ApplicationUserId);
+            }
+            else
+            {
+                await _applicationUserRegisterHelper.UnLockoutTheUser(hairdresser.ApplicationUserId);
+            }
 
             return RedirectToPage("./Index");
         }

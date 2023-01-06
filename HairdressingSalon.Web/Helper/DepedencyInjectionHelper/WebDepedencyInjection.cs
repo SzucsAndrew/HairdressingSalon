@@ -23,6 +23,7 @@ namespace HairdressingSalon.Web.Helper.DepedencyInjectionHelper
         {
             service.AddTransient<IEmailSender, EmailSender>();
             service.AddSingleton<FileService>();
+            service.AddScoped<ApplicationUserRegisterHelper>();
         }
 
         private static void AddAuth(this IServiceCollection service, IConfigurationRoot configuration)
